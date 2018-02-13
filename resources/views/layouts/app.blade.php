@@ -30,26 +30,15 @@
                     <nav id="mainav" class="fl_right">
                         <ul class="clear">
                             <li class="active"><a href="{{ route('index') }}">Home</a></li>
-                            <li><a class="drop" href="#">Pages</a>
+                            @auth
+                            <li><a class="drop" >Pages</a>
                                 <ul>
                                     <li><a href="{{ route('create') }}">Write post</a></li>
                                     <li><a href="{{ route('edit') }}">Edit</a></li>
 
                                 </ul>
                             </li>
-                            <li><a class="drop" href="#">Dropdown</a>
-                                <ul>
-                                    <li><a href="#">Level 2</a></li>
-                                    <li><a class="drop" href="#">Level 2 + Drop</a>
-                                        <ul>
-                                            <li><a href="#">Level 3</a></li>
-                                            <li><a href="#">Level 3</a></li>
-                                            <li><a href="#">Level 3</a></li>
-                                        </ul>
-                                    </li>
-                                    <li><a href="#">Level 2</a></li>
-                                </ul>
-                            </li>
+                            @endauth
                             @guest
                                 <li><a href="{{ route('login') }}">Login</a></li>
                                 <li><a href="{{ route('register') }}">Register</a></li>

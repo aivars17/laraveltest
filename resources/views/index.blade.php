@@ -11,10 +11,7 @@
     </div>
     <!-- ################################################################################################ -->
 </div>
-<!-- End Top Background Image Wrapper -->
-<!-- ################################################################################################ -->
-<!-- ################################################################################################ -->
-<!-- ################################################################################################ -->
+
 <div class=" post_box_back ">
     <main class=" clear">
         <!-- main body -->
@@ -24,63 +21,17 @@
             @foreach($posts as $post)
 
                     <li class="post_box">
-                        <article class="bgded overlay" style="background-image:url('{{ URL::asset('/img/grand.jpg') }}');">
+                        <article class="bgded overlay" style="background-image:url('{{ URL::asset($post->upload) }}');">
                             <div class="txtwrap"><i class="block fa fa-4x fa-child"></i>
                                 <h6 class="heading">{{ $post->title }}</h6>
                                 <p>{!! $post->date !!}</p>
-                                <p>{{ $post->content }}</p>
+                                <p>{{ str_limit($post->content,400) }}</p>
                             </div>
                             <footer><a href="{{ route('single',$post->id) }}"> More &raquo;</a></footer>
                         </article>
                     </li>
 
             @endforeach
-
-            {{--<li class="one_third">--}}
-                {{--<article class="bgded overlay" style="background-image:url('images/demo/320x340.png');">--}}
-                    {{--<div class="txtwrap"><i class="block fa fa-4x fa-child"></i>--}}
-                        {{--<h6 class="heading">Malesuada</h6>--}}
-                        {{--<p>Lacus donec molestie sodales ut nunc felis malesuada quis semper fringilla&hellip;</p>--}}
-                    {{--</div>--}}
-                    {{--<footer><a href="#">More &raquo;</a></footer>--}}
-                {{--</article>--}}
-            {{--</li>--}}
-            {{--<li class="one_third active">--}}
-                {{--<article class="bgded overlay" style="background-image:url('images/demo/320x340.png');">--}}
-                    {{--<div class="txtwrap"><i class="block fa fa-4x fa-chrome"></i>--}}
-                        {{--<h6 class="heading">Facilisis</h6>--}}
-                        {{--<p>Nec velit mauris molestie dui et dignissim vestibulum diam tortor cursus&hellip;</p>--}}
-                    {{--</div>--}}
-                    {{--<footer><a href="#">More &raquo;</a></footer>--}}
-                {{--</article>--}}
-            {{--</li>--}}
-            {{--<li class="one_third first">--}}
-                {{--<article class="bgded overlay" style="background-image:url('images/demo/320x340.png');">--}}
-                    {{--<div class="txtwrap"><i class="block fa fa-4x fa-lock"></i>--}}
-                        {{--<h6 class="heading">Venenatis</h6>--}}
-                        {{--<p>Phasellus ut tortor vel mattis lorem dui tortor amet odio quis metus varius&hellip;</p>--}}
-                    {{--</div>--}}
-                    {{--<footer><a href="#">More &raquo;</a></footer>--}}
-                {{--</article>--}}
-            {{--</li>--}}
-            {{--<li class="one_third active">--}}
-                {{--<article class="bgded overlay" style="background-image:url('images/demo/320x340.png');">--}}
-                    {{--<div class="txtwrap"><i class="block fa fa-4x fa-rocket"></i>--}}
-                        {{--<h6 class="heading">Malesuada</h6>--}}
-                        {{--<p>Vitae est sed rhoncus rutrum ligula quis placerat quisque nec lacinia nisi&hellip;</p>--}}
-                    {{--</div>--}}
-                    {{--<footer><a href="#">More &raquo;</a></footer>--}}
-                {{--</article>--}}
-            {{--</li>--}}
-            {{--<li class="one_third">--}}
-                {{--<article class="bgded overlay" style="background-image:url('images/demo/320x340.png');">--}}
-                    {{--<div class="txtwrap"><i class="block fa fa-4x fa-train"></i>--}}
-                        {{--<h6 class="heading">Ultricies</h6>--}}
-                        {{--<p>Venenatis in eget cursus lorem integer vulputate enim vel facilisis sapien&hellip;</p>--}}
-                    {{--</div>--}}
-                    {{--<footer><a href="#">More &raquo;</a></footer>--}}
-                {{--</article>--}}
-            {{--</li>--}}
         </ul>
         <!-- ################################################################################################ -->
         <!-- / main body -->

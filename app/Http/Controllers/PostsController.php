@@ -7,73 +7,48 @@
  */
 
 namespace App\Http\Controllers;
+use App\Http\Requests\StorePostRequest;
 use App\Post;
 use App\Comments;
-
+use Session;
+use Carbon\Carbon;
 class PostsController extends Controller
 {
     public function create()
     {
         return view('create');
     }
+    public function store(StorePostRequest $request)
+    {
+        $file = $request->file('image');
+        $destinationPath = 'uploads';
+        Post::create($request->except('_token') + [
+               'date' => Carbon::now(),
+               'upload' => "/" . $destinationPath . "/" . $file->getClientOriginalName()
+            ]);
+        $file->move($destinationPath,$file->getClientOriginalName());
 
+
+        return view('create', [
+            'saved' => 'Your story posted'
+        ]);
+    }
     public function show()
     {
         return view('show');
     }
+
+    public function delete($id)
+    {
+        Comments::where('post_id',$id)->delete();
+        Post::findOrFail($id)->delete();
+
+        return redirect()->back();
+    }
     public function edit()
     {
 
-        $post1 = new \stdClass();
-        $post1->id = '1';
-        $post1->title = 'Ullamcorper';
-        $post1->author = 'Petras';
-        $post1->date = '2018/01/17';
-        $post1->text =  'Lacus eget nullam in ornare magna nam vitae volutpat justo tincidunt&hellip;';
-        $post1->logo = 'fa fa-4x fa-apple';
-        $post1->class = 'one_third active';
-        $post2 = new \stdClass();
-        $post2->id = '2';
-        $post2->title = 'Malesuada';
-        $post2->author = 'Jonas';
-        $post2->date = '2018/01/17';
-        $post2->text =  'Lacus donec molestie sodales ut nunc felis malesuada quis semper fringilla&hellip;';
-        $post2->logo = 'fa fa-4x fa-child';
-        $post2->class = 'one_third';
-        $post3 = new \stdClass();
-        $post3->id = '3';
-        $post3->title = 'Facilisis';
-        $post3->author = 'Petras';
-        $post3->date = '2018/01/17';
-        $post3->text =  'Phasellus ut tortor vel mattis lorem dui tortor amet odio quis metus varius&hellip;';
-        $post3->logo =  'fa fa-4x fa-chrome';
-        $post3->class = 'one_third active';
-        $post4 = new \stdClass();
-        $post4->id = '4';
-        $post4->title = 'Venenatis';
-        $post4->author = 'Jonas';
-        $post4->date = '2018/01/17';
-        $post4->text =  'Vitae est sed rhoncus rutrum ligula quis placerat quisque nec lacinia nisi&hellip;';
-        $post4->logo =  'fa fa-4x fa-lock';
-        $post4->class = 'one_third first';
-        $post5 = new \stdClass();
-        $post5->id = '5';
-        $post5->title = 'Malesuada';
-        $post5->author = 'Petras';
-        $post5->date = '2018/01/17';
-        $post5->text =  'Vitae est sed rhoncus rutrum ligula quis placerat quisque nec lacinia nisi&hellip;';
-        $post5->logo =  'fa fa-4x fa-rocket';
-        $post5->class = 'one_third active';
-        $post6 = new \stdClass();
-        $post6->id = '6';
-        $post6->title = 'Ultricies';
-        $post6->author = 'Jonas';
-        $post6->date = '2018/01/17';
-        $post6->text =  'Vitae est sed rhoncus rutrum ligula quis placerat quisque nec lacinia nisi&hellip;';
-        $post6->logo =  'fa fa-4x fa-train';
-        $post6->class = 'one_third';
-
-        $posts = [$post1,$post2,$post3,$post4,$post5,$post6];
+        $posts = Post::orderBy('date','DESC')->paginate(15);
 
         return view('edit', [
             'posts' => $posts
@@ -83,22 +58,43 @@ class PostsController extends Controller
     public function index()
     {
 
+    }
 
+    public function update($id)
+    {
+        $post = Post::findOrFail($id);
+        return view('posts.update', [
+            'post' => $post
+        ]);
 
+    }
+    public function updateStore($id, StorePostRequest $request)
+    {
+
+        $file = $request->file('image');
+        $destinationPath = 'uploads';
+        if(isset($file)){
+            Post::findOrFail($id)
+                ->update($request->except('_token') + [
+                        'upload' => "/" . $destinationPath . "/" . $file->getClientOriginalName()
+                    ]);
+
+            $file->move($destinationPath,$file->getClientOriginalName());
+            Session::flash('status', 'Task was successfuly!!!');
+        } else{
+            Session::flash('status', 'Ops! update fail');
+        }
+
+        return redirect()->route('update',$id);
     }
     public function single($id)
     {
-
-
-        $post = Post::where('id', $id)->get();
+        $post = Post::findOrFail($id);
         $comments = Comments::where('post_id', $id)->paginate(2);
-        dump($post);
+
         return view('single', [
             'posts' => $post,
             'comments' => $comments
         ]);
-
     }
-
-
 }

@@ -14,7 +14,7 @@ class HomeController extends Controller
     public function index()
     {
 
-        $posts = DB::table('posts')->paginate(12);
+        $posts = Post::orderBy('date','DESC')->paginate(12);
 
     return view('index', [
         'posts' => $posts

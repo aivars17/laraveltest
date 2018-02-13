@@ -277,8 +277,19 @@ input:focus, textarea:focus, *:required:focus{border-color:#C5A059;}
 .post_box{
 	width: calc(100%/3);
 	float: left;
+	height: 400px;
+	padding: 2px;
 }
-
+.post_box article{
+	height: 100%;
+}
+.labels-success{
+	padding: 5px;
+	color: red;
+	background-color: greenyellow;
+	width: 150px;
+	font-weight: bold;
+}
 .post_box_back
 {
 	width: 100%; !important;
